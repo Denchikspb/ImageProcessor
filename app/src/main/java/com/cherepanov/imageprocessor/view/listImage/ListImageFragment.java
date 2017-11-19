@@ -38,7 +38,7 @@ public class ListImageFragment
         ButterKnife.bind(this, view);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new ResultImageAdapter();
+        mAdapter = new ResultImageAdapter(getFragmentManager());
         mRecyclerView.setAdapter(mAdapter);
 
         return view;

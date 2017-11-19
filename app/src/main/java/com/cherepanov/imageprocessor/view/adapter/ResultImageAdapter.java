@@ -1,6 +1,7 @@
 package com.cherepanov.imageprocessor.view.adapter;
 
 import android.graphics.Color;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.cherepanov.imageprocessor.R;
 import com.cherepanov.imageprocessor.model.entity.ImageFile;
+import com.cherepanov.imageprocessor.view.dialogs.ClickItemAdapterDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,12 @@ public class ResultImageAdapter extends RecyclerView.Adapter<ResultImageAdapter.
 
 
     List<ImageFile> mImageFiles = new ArrayList<>();
+
+    FragmentManager mFragmentManager;
+
+    public ResultImageAdapter(FragmentManager manager) {
+        mFragmentManager = manager;
+    }
 
     public void setCurrentListImage(List<ImageFile> list) {
         mImageFiles = list;
@@ -37,6 +45,13 @@ public class ResultImageAdapter extends RecyclerView.Adapter<ResultImageAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.mImageView.setImageBitmap(mImageFiles.get(position).getBitmap());
         holder.mLayout.setBackgroundColor(position % 2 == 0 ? Color.WHITE : Color.BLACK);
+        holder.mLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClickItemAdapterDialog dialog = new ClickItemAdapterDialog();
+                dialog.show(mFragmentManager, "Dialog");
+            }
+        });
     }
 
     @Override
@@ -44,7 +59,7 @@ public class ResultImageAdapter extends RecyclerView.Adapter<ResultImageAdapter.
         return mImageFiles == null ? 0 : mImageFiles.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder{
 
         @Bind(R.id.item_image)
         ImageView mImageView;
@@ -57,5 +72,4 @@ public class ResultImageAdapter extends RecyclerView.Adapter<ResultImageAdapter.
             ButterKnife.bind(this, itemView);
         }
     }
-
 }
