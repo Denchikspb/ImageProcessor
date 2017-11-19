@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Image Processor</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="add_image">Add image</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="rotate">Rotate</string>
+    <string name="invert">Invert colors</string>
+    <string name="mirror">Mirror image</string>
+
+    <string name="make_photo">Photo</string>
+    <string name="take_from_storage">Storage</string>
+    <string name="get_from_url">URL</string>
+</resources>
