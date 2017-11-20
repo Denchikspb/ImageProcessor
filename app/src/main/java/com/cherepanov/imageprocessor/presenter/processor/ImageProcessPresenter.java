@@ -10,8 +10,10 @@ import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.widget.ImageView;
 
+import com.cherepanov.imageprocessor.R;
 import com.cherepanov.imageprocessor.model.storage.ILocalStorage;
 import com.cherepanov.imageprocessor.model.storage.LocalStorageImpl;
+import com.cherepanov.imageprocessor.utils.NetworkUtils;
 import com.cherepanov.imageprocessor.view.dialogs.AddImageDialogFragment;
 import com.cherepanov.imageprocessor.view.processor.IImageProcessView;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
@@ -31,6 +33,9 @@ public class ImageProcessPresenter
 
     @Override
     public void rotateImage(ImageView srcImage) {
+        if (!isNotNullImage(srcImage)) {
+            return;
+        }
         Bitmap bitmap = ((BitmapDrawable) srcImage.getDrawable()).getBitmap();
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
@@ -43,6 +48,9 @@ public class ImageProcessPresenter
 
     @Override
     public void invertColorsImg(ImageView srcImage) {
+        if (!isNotNullImage(srcImage)) {
+            return;
+        }
         Bitmap src = ((BitmapDrawable) srcImage.getDrawable()).getBitmap();
 
         Bitmap dest = Bitmap.createBitmap(
@@ -70,6 +78,9 @@ public class ImageProcessPresenter
 
     @Override
     public void mirrorImg(ImageView srcImage) {
+        if (!isNotNullImage(srcImage)) {
+            return;
+        }
         Bitmap bitmap = ((BitmapDrawable) srcImage.getDrawable()).getBitmap();
         Matrix matrix = new Matrix();
         matrix.preScale(-1.0f, 1.0f);
@@ -102,6 +113,17 @@ public class ImageProcessPresenter
     }
 
     @Override
+    public void loadFromURL() {
+        if (NetworkUtils.isNetAvailable(mContext)) {
+            startLoadFromURL();
+        } else {
+            if (isViewAttached()) {
+                getView().showMessage(mContext.getResources().getString(R.string.no_internet));
+            }
+        }
+    }
+
+    @Override
     public Bitmap getBitmapByURI(Uri uriImage) {
         return mStorage.getBitmapByURI(uriImage);
     }
@@ -113,8 +135,24 @@ public class ImageProcessPresenter
 
     @Override
     public void showData() {
-        if (isViewAttached() && mSrcDrawable != null){
-            getView().showMainImage(((BitmapDrawable)mSrcDrawable).getBitmap());
+        if (isViewAttached() && mSrcDrawable != null) {
+            getView().showMainImage(((BitmapDrawable) mSrcDrawable).getBitmap());
         }
+    }
+
+    private void startLoadFromURL() {
+        if (isViewAttached()) {
+            getView().showMessage("start load");
+        }
+    }
+
+    private boolean isNotNullImage(ImageView image) {
+        if (image == null) {
+            if (isViewAttached()) {
+                getView().showMessage(mContext.getResources().getString(R.string.no_image));
+                return false;
+            }
+        }
+        return true;
     }
 }

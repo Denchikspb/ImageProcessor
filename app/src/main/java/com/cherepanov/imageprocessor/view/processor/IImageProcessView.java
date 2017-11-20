@@ -13,4 +13,6 @@ public interface IImageProcessView extends MvpView {
     void makePhoto();
 
     void getFromGallery();
+
+    void showMessage(String text);
 }

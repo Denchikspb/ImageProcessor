@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.cherepanov.imageprocessor.R;
 import com.cherepanov.imageprocessor.presenter.processor.ImageProcessPresenter;
@@ -113,6 +114,11 @@ public class ImageProcessFragment
     }
 
     @Override
+    public void showMessage(String text) {
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_RESULT && resultCode == RESULT_OK && data != null) {
             Bundle bundle = data.getExtras();
@@ -163,6 +169,13 @@ public class ImageProcessFragment
         });
 
         mAddImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getPresenter().addImageDialog(getFragmentManager());
+            }
+        });
+
+        mImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getPresenter().addImageDialog(getFragmentManager());

@@ -7,6 +7,9 @@
     <string name="add_image">Add image</string>
     <string name="cancel">Cancel</string>
     <string name="failed">Operation Failed</string>
+    <string name="no_internet">No internet</string>
+    <string name="download">Download</string>
+    <string name="no_image">No image</string>
 
     <string name="rotate">Rotate</string>
     <string name="invert">Invert colors</string>

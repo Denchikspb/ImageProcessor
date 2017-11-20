@@ -21,4 +21,12 @@
         android:layout_marginTop="8dp"
         android:text="@string/take_from_storage"/>
 
+    <Button
+        android:id="@+id/load_from_internet_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/take_from_storage_btn"
+        android:layout_marginTop="8dp"
+        android:text="@string/get_from_url"/>
+
 </RelativeLayout>
