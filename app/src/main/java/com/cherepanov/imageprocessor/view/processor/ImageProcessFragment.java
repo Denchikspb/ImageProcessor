@@ -136,6 +136,10 @@ public class ImageProcessFragment
         }
     }
 
+    public void addNewSrcImage(Bitmap bitmap){
+        mImage.setImageBitmap(bitmap);
+    }
+
     private void setupListeners() {
 
         mRotateBtn.setOnClickListener(new View.OnClickListener() {

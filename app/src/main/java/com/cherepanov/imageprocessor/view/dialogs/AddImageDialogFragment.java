@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.cherepanov.imageprocessor.R;
 
@@ -18,9 +19,9 @@ import butterknife.ButterKnife;
 public class AddImageDialogFragment extends DialogFragment {
 
     public interface AddImageDialogListener {
-       void onMakePhoto();
+        void onMakePhoto();
 
-       void onTakeFromStorage();
+        void onTakeFromStorage();
     }
 
     @Bind(R.id.make_photo_btn)
@@ -31,7 +32,7 @@ public class AddImageDialogFragment extends DialogFragment {
 
     AddImageDialogListener mDialogListener;
 
-    public void setDialogListener(AddImageDialogListener listener){
+    public void setDialogListener(AddImageDialogListener listener) {
         mDialogListener = listener;
     }
 
@@ -61,7 +62,11 @@ public class AddImageDialogFragment extends DialogFragment {
         mMakePhotoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDialogListener.onMakePhoto();
+                if (mDialogListener != null) {
+                    mDialogListener.onMakePhoto();
+                } else {
+                    Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();
+                }
                 AddImageDialogFragment.this.getDialog().dismiss();
             }
         });
@@ -69,7 +74,11 @@ public class AddImageDialogFragment extends DialogFragment {
         mTakeStorageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mDialogListener.onTakeFromStorage();
+                if (mDialogListener != null) {
+                    mDialogListener.onTakeFromStorage();
+                } else {
+                    Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();
+                }
                 AddImageDialogFragment.this.getDialog().dismiss();
             }
         });

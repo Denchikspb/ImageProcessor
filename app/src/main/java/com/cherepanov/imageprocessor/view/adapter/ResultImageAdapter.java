@@ -19,8 +19,21 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ResultImageAdapter extends RecyclerView.Adapter<ResultImageAdapter.ViewHolder> {
+public class ResultImageAdapter
+        extends RecyclerView.Adapter<ResultImageAdapter.ViewHolder>
+        implements ClickItemAdapterDialog.ItemAdapterDialogListener {
 
+    public interface ImageAdapterListener{
+        void deleteImage(int number);
+
+        void useImageAsSrc(int number);
+    }
+
+    ImageAdapterListener mListener;
+
+    public void setListener(ImageAdapterListener listener) {
+        mListener = listener;
+    }
 
     List<ImageFile> mImageFiles = new ArrayList<>();
 
@@ -42,13 +55,15 @@ public class ResultImageAdapter extends RecyclerView.Adapter<ResultImageAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mImageView.setImageBitmap(mImageFiles.get(position).getBitmap());
         holder.mLayout.setBackgroundColor(position % 2 == 0 ? Color.WHITE : Color.BLACK);
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ClickItemAdapterDialog dialog = new ClickItemAdapterDialog();
+                dialog.setListener(ResultImageAdapter.this);
+                dialog.setNumberItem(position);
                 dialog.show(mFragmentManager, "Dialog");
             }
         });
@@ -59,7 +74,17 @@ public class ResultImageAdapter extends RecyclerView.Adapter<ResultImageAdapter.
         return mImageFiles == null ? 0 : mImageFiles.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public void deleteImage(int number) {
+        mListener.deleteImage(number);
+    }
+
+    @Override
+    public void useImageAsSrc(int number) {
+        mListener.useImageAsSrc(number);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         @Bind(R.id.item_image)
         ImageView mImageView;

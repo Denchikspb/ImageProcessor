@@ -6,6 +6,7 @@
 
     <string name="add_image">Add image</string>
     <string name="cancel">Cancel</string>
+    <string name="failed">Operation Failed</string>
 
     <string name="rotate">Rotate</string>
     <string name="invert">Invert colors</string>
@@ -18,6 +19,6 @@
     <string name="delete">Delete</string>
     <string name="source">Source</string>
     <string name="select_next_step">Select an action</string>
-    <string name="item_dialog_message">1. Delete 2. Use as a source 3. Close</string>
+    <string name="item_dialog_message">What do you want to do with this image?</string>
 
 </resources>

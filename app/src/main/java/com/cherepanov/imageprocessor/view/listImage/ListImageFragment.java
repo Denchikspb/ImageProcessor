@@ -1,6 +1,7 @@
 package com.cherepanov.imageprocessor.view.listImage;
 
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,7 +24,13 @@ import butterknife.ButterKnife;
 
 public class ListImageFragment
         extends MvpFragment<IListImageView, ListImagePresenter>
-        implements IListImageView {
+        implements IListImageView, ResultImageAdapter.ImageAdapterListener {
+
+    public interface OnListInteractionListener {
+        void passImageToSrc(Bitmap bitmap);
+    }
+
+    OnListInteractionListener mListener;
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
@@ -39,9 +46,26 @@ public class ListImageFragment
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new ResultImageAdapter(getFragmentManager());
+        mAdapter.setListener(this);
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnListInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " должен реализовывать интерфейс OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -56,12 +80,22 @@ public class ListImageFragment
         return new ListImagePresenter(getContext());
     }
 
-    public void addNewImage(Bitmap bitmap){
+    public void addNewImage(Bitmap bitmap) {
         getPresenter().addNewImage(bitmap);
     }
 
     @Override
     public void showImageList(List<ImageFile> list) {
         mAdapter.setCurrentListImage(list);
+    }
+
+    @Override
+    public void deleteImage(int numberItem) {
+        getPresenter().deleteItem(numberItem);
+    }
+
+    @Override
+    public void useImageAsSrc(int numberItem) {
+        mListener.passImageToSrc(getPresenter().getImageFromList(numberItem));
     }
 }

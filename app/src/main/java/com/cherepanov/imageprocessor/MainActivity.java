@@ -7,7 +7,9 @@ import android.os.Bundle;
 import com.cherepanov.imageprocessor.view.processor.ImageProcessFragment;
 import com.cherepanov.imageprocessor.view.listImage.ListImageFragment;
 
-public class MainActivity extends AppCompatActivity implements ImageProcessFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements
+        ImageProcessFragment.OnFragmentInteractionListener,
+        ListImageFragment.OnListInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +24,15 @@ public class MainActivity extends AppCompatActivity implements ImageProcessFragm
                 .findFragmentById(R.id.list_image_fragment);
         if (fragment != null && fragment.isInLayout()) {
             fragment.addNewImage(bitmap);
+        }
+    }
+
+    @Override
+    public void passImageToSrc(Bitmap bitmap) {
+        ImageProcessFragment fragment = (ImageProcessFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.image_fragment);
+        if (fragment != null && fragment.isInLayout()) {
+            fragment.addNewSrcImage(bitmap);
         }
     }
 }
