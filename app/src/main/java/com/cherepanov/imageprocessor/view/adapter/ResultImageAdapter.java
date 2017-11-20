@@ -57,7 +57,7 @@ public class ResultImageAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.mImageView.setImageBitmap(mImageFiles.get(position).getBitmap());
-        holder.mLayout.setBackgroundColor(position % 2 == 0 ? Color.WHITE : Color.BLACK);
+        holder.mLayout.setBackgroundColor(position % 2 == 0 ? Color.CYAN : Color.LTGRAY);
         holder.mLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
