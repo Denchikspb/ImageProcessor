@@ -23,7 +23,7 @@ public class ResultImageAdapter
         extends RecyclerView.Adapter<ResultImageAdapter.ViewHolder>
         implements ClickItemAdapterDialog.ItemAdapterDialogListener {
 
-    public interface ImageAdapterListener{
+    public interface ImageAdapterListener {
         void deleteImage(int number);
 
         void useImageAsSrc(int number);

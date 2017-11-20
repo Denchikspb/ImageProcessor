@@ -1,11 +1,11 @@
 package com.cherepanov.imageprocessor;
 
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-import com.cherepanov.imageprocessor.view.processor.ImageProcessFragment;
 import com.cherepanov.imageprocessor.view.listImage.ListImageFragment;
+import com.cherepanov.imageprocessor.view.processor.ImageProcessFragment;
 
 public class MainActivity extends AppCompatActivity implements
         ImageProcessFragment.OnFragmentInteractionListener,

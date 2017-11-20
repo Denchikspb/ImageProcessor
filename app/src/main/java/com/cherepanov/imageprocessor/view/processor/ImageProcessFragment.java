@@ -39,7 +39,7 @@ public class ImageProcessFragment
 
     private final int CAMERA_RESULT = 0;
     private final int RESULT_LOAD_IMAGE = 1;
-    private static final int REQUEST_WRITE_EXTERNAL_STORAGE = 10001;
+    private static final int PERMISSION_REQUEST_CODE = 123;
 
     private OnFragmentInteractionListener mListener;
 
@@ -53,7 +53,6 @@ public class ImageProcessFragment
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_process, container, false);
         ButterKnife.bind(this, view);
-
         setupListeners();
         return view;
     }
@@ -106,15 +105,11 @@ public class ImageProcessFragment
 
     @Override
     public void getFromGallery() {
-//        if (isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
         Intent i = new Intent(
                 Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(i, RESULT_LOAD_IMAGE);
-//        } else {
-//            requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, REQUEST_WRITE_EXTERNAL_STORAGE);
-//        }
     }
 
     @Override
@@ -133,10 +128,14 @@ public class ImageProcessFragment
             Bitmap bitmap = getPresenter().getBitmapByURI(data.getData());
             mImage.setImageBitmap(bitmap);
             mAddImageBtn.setVisibility(View.GONE);
+        } else if (requestCode == PERMISSION_REQUEST_CODE) {
+            getFromGallery();
+            return;
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void addNewSrcImage(Bitmap bitmap){
+    public void addNewSrcImage(Bitmap bitmap) {
         mImage.setImageBitmap(bitmap);
     }
 
@@ -170,28 +169,4 @@ public class ImageProcessFragment
             }
         });
     }
-
-//    private boolean isPermissionGranted(String permission) {
-//        int permissionCheck = ActivityCompat.checkSelfPermission(getActivity(), permission);
-//        return permissionCheck == PackageManager.PERMISSION_GRANTED;
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
-//                                           @NonNull int[] grantResults) {
-//        if (requestCode == REQUEST_WRITE_EXTERNAL_STORAGE) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                Toast.makeText(getActivity(), "Разрешения получены", Toast.LENGTH_LONG).show();
-//            } else {
-//                Toast.makeText(getActivity(), "Разрешения не получены", Toast.LENGTH_LONG).show();
-//            }
-//        } else {
-//            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        }
-//    }
-//
-//    private void requestPermission(String permission, int requestCode) {
-//        // запрашиваем разрешение
-//        ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
-//    }
 }

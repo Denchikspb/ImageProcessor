@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
@@ -15,7 +14,7 @@ public class ClickItemAdapterDialog extends DialogFragment {
 
     private static final String ITEM_NUM = "ITEM_NUM";
 
-    public interface ItemAdapterDialogListener{
+    public interface ItemAdapterDialogListener {
         void deleteImage(int numberItem);
 
         void useImageAsSrc(int numberItem);
@@ -36,7 +35,7 @@ public class ClickItemAdapterDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             mNumberItem = savedInstanceState.getInt(ITEM_NUM);
         }
 
@@ -47,7 +46,7 @@ public class ClickItemAdapterDialog extends DialogFragment {
                 .setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(mListener != null) {
+                        if (mListener != null) {
                             mListener.deleteImage(mNumberItem);
                         } else {
                             Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();
@@ -64,7 +63,7 @@ public class ClickItemAdapterDialog extends DialogFragment {
                 .setNeutralButton(R.string.source, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if (mListener != null){
+                        if (mListener != null) {
                             mListener.useImageAsSrc(mNumberItem);
                         } else {
                             Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();

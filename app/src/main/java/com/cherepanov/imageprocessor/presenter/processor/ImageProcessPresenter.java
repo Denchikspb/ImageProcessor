@@ -12,11 +12,9 @@ import android.widget.ImageView;
 
 import com.cherepanov.imageprocessor.model.storage.ILocalStorage;
 import com.cherepanov.imageprocessor.model.storage.LocalStorageImpl;
-import com.cherepanov.imageprocessor.view.processor.IImageProcessView;
 import com.cherepanov.imageprocessor.view.dialogs.AddImageDialogFragment;
+import com.cherepanov.imageprocessor.view.processor.IImageProcessView;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
-
-import butterknife.Bind;
 
 public class ImageProcessPresenter
         extends MvpBasePresenter<IImageProcessView>
