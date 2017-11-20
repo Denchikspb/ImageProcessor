@@ -33,7 +33,7 @@ public class ImageProcessPresenter
 
     @Override
     public void rotateImage(ImageView srcImage) {
-        if (!isNotNullImage(srcImage)) {
+        if (!isNotNullImage(srcImage.getDrawable())) {
             return;
         }
         Bitmap bitmap = ((BitmapDrawable) srcImage.getDrawable()).getBitmap();
@@ -48,7 +48,7 @@ public class ImageProcessPresenter
 
     @Override
     public void invertColorsImg(ImageView srcImage) {
-        if (!isNotNullImage(srcImage)) {
+        if (!isNotNullImage(srcImage.getDrawable())) {
             return;
         }
         Bitmap src = ((BitmapDrawable) srcImage.getDrawable()).getBitmap();
@@ -78,7 +78,7 @@ public class ImageProcessPresenter
 
     @Override
     public void mirrorImg(ImageView srcImage) {
-        if (!isNotNullImage(srcImage)) {
+        if (!isNotNullImage(srcImage.getDrawable())) {
             return;
         }
         Bitmap bitmap = ((BitmapDrawable) srcImage.getDrawable()).getBitmap();
@@ -146,7 +146,7 @@ public class ImageProcessPresenter
         }
     }
 
-    private boolean isNotNullImage(ImageView image) {
+    private boolean isNotNullImage(Drawable image) {
         if (image == null) {
             if (isViewAttached()) {
                 getView().showMessage(mContext.getResources().getString(R.string.no_image));
