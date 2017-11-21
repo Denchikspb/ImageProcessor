@@ -14,6 +14,8 @@ import com.cherepanov.imageprocessor.utils.Constants;
 import com.cherepanov.imageprocessor.utils.PictureUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -41,8 +43,7 @@ public class LocalStorageImpl implements ILocalStorage {
     }
 
     @Override
-    public String saveToInternalStorage(ImageFile imageFile, Context context) {
-        ContextWrapper cw = new ContextWrapper(context);
+    public String saveToInternalStorage(ImageFile imageFile) {
         File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "ImageProcessor");
 
         File mypath = new File(directory, imageFile.getId() + ".jpg");
@@ -63,5 +64,18 @@ public class LocalStorageImpl implements ILocalStorage {
         return directory.getAbsolutePath();
     }
 
+    private Bitmap loadImageFromStorage(ImageFile imageFile) {
+        File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "ImageProcessor");
+
+        try {
+            File mypath = new File(directory, imageFile.getId() + ".jpg");
+            if (!mypath.exists())
+                return BitmapFactory.decodeStream(new FileInputStream(mypath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 }

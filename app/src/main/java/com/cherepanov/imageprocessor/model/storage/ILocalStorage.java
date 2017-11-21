@@ -10,5 +10,5 @@ public interface ILocalStorage {
 
     Bitmap getBitmapByURI(Uri uri);
 
-    String saveToInternalStorage(ImageFile imageFile, Context context);
+    String saveToInternalStorage(ImageFile imageFile);
 }

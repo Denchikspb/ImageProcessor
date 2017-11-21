@@ -30,6 +30,7 @@ public class ImageProcessPresenter
     public ImageProcessPresenter(Context context) {
         mContext = context;
         mStorage = new LocalStorageImpl(context);
+        loadFromStorage();
     }
 
     @Override
@@ -45,7 +46,7 @@ public class ImageProcessPresenter
         if (isViewAttached()) {
             ImageFile imageFile = new ImageFile();
             imageFile.setBitmap(newBitmap);
-            mStorage.saveToInternalStorage(imageFile, mContext);
+            String path = mStorage.saveToInternalStorage(imageFile);
             getView().showNewImage(imageFile);
         }
     }
@@ -78,7 +79,7 @@ public class ImageProcessPresenter
         if (isViewAttached()) {
             ImageFile imageFile = new ImageFile();
             imageFile.setBitmap(dest);
-            mStorage.saveToInternalStorage(imageFile, mContext);
+            mStorage.saveToInternalStorage(imageFile);
             getView().showNewImage(imageFile);
         }
     }
@@ -96,7 +97,7 @@ public class ImageProcessPresenter
         if (isViewAttached()) {
             ImageFile imageFile = new ImageFile();
             imageFile.setBitmap(newBitmap);
-            mStorage.saveToInternalStorage(imageFile, mContext);
+            mStorage.saveToInternalStorage(imageFile);
             getView().showNewImage(imageFile);
         }
     }
@@ -164,5 +165,8 @@ public class ImageProcessPresenter
             }
         }
         return true;
+    }
+
+    private void loadFromStorage() {
     }
 }
