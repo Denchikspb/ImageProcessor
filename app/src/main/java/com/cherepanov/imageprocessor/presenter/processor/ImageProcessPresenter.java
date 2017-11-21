@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.widget.ImageView;
 
 import com.cherepanov.imageprocessor.R;
+import com.cherepanov.imageprocessor.model.entity.ImageFile;
 import com.cherepanov.imageprocessor.model.storage.ILocalStorage;
 import com.cherepanov.imageprocessor.model.storage.LocalStorageImpl;
 import com.cherepanov.imageprocessor.utils.NetworkUtils;
@@ -42,7 +43,10 @@ public class ImageProcessPresenter
         Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         if (isViewAttached()) {
-            getView().showNewImage(newBitmap);
+            ImageFile imageFile = new ImageFile();
+            imageFile.setBitmap(newBitmap);
+            mStorage.saveToInternalStorage(imageFile, mContext);
+            getView().showNewImage(imageFile);
         }
     }
 
@@ -72,7 +76,10 @@ public class ImageProcessPresenter
         }
 
         if (isViewAttached()) {
-            getView().showNewImage(dest);
+            ImageFile imageFile = new ImageFile();
+            imageFile.setBitmap(dest);
+            mStorage.saveToInternalStorage(imageFile, mContext);
+            getView().showNewImage(imageFile);
         }
     }
 
@@ -87,7 +94,10 @@ public class ImageProcessPresenter
         Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         if (isViewAttached()) {
-            getView().showNewImage(newBitmap);
+            ImageFile imageFile = new ImageFile();
+            imageFile.setBitmap(newBitmap);
+            mStorage.saveToInternalStorage(imageFile, mContext);
+            getView().showNewImage(imageFile);
         }
     }
 

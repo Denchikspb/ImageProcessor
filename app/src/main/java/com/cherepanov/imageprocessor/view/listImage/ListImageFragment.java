@@ -80,8 +80,8 @@ public class ListImageFragment
         return new ListImagePresenter(getContext());
     }
 
-    public void addNewImage(Bitmap bitmap) {
-        getPresenter().addNewImage(bitmap);
+    public void addNewImage(ImageFile imageFile) {
+        getPresenter().addNewImage(imageFile);
     }
 
     @Override

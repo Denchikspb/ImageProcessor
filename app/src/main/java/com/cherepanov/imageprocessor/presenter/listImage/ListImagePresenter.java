@@ -25,10 +25,8 @@ public class ListImagePresenter
     }
 
     @Override
-    public void addNewImage(Bitmap bitmap) {
-        ImageFile file = new ImageFile();
-        file.setBitmap(bitmap);
-        mCurrentImageFiles.add(file);
+    public void addNewImage(ImageFile imageFile) {
+        mCurrentImageFiles.add(imageFile);
         if (isViewAttached()) {
             getView().showImageList(mCurrentImageFiles);
         }

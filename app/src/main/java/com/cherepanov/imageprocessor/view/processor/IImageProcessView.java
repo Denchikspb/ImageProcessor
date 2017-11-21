@@ -2,11 +2,12 @@ package com.cherepanov.imageprocessor.view.processor;
 
 import android.graphics.Bitmap;
 
+import com.cherepanov.imageprocessor.model.entity.ImageFile;
 import com.hannesdorfmann.mosby3.mvp.MvpView;
 
 public interface IImageProcessView extends MvpView {
 
-    void showNewImage(Bitmap bitmap);
+    void showNewImage(ImageFile imageFile);
 
     void showMainImage(Bitmap bitmap);
 

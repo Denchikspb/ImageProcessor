@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.cherepanov.imageprocessor.R;
+import com.cherepanov.imageprocessor.model.entity.ImageFile;
 import com.cherepanov.imageprocessor.presenter.processor.ImageProcessPresenter;
 import com.hannesdorfmann.mosby3.mvp.MvpFragment;
 
@@ -46,7 +47,7 @@ public class ImageProcessFragment
 
     public interface OnFragmentInteractionListener {
 
-        void onFragmentInteraction(Bitmap bitmap);
+        void onFragmentInteraction(ImageFile imageFile);
     }
 
     @Override
@@ -88,8 +89,8 @@ public class ImageProcessFragment
     }
 
     @Override
-    public void showNewImage(Bitmap bitmap) {
-        mListener.onFragmentInteraction(bitmap);
+    public void showNewImage(ImageFile imageFile) {
+        mListener.onFragmentInteraction(imageFile);
     }
 
     @Override

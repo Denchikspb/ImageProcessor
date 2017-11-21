@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.cherepanov.imageprocessor.model.entity.ImageFile;
 import com.cherepanov.imageprocessor.view.listImage.ListImageFragment;
 import com.cherepanov.imageprocessor.view.processor.ImageProcessFragment;
 
@@ -44,11 +45,11 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(Bitmap bitmap) {
+    public void onFragmentInteraction(ImageFile imageFile) {
         ListImageFragment fragment = (ListImageFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.list_image_fragment);
         if (fragment != null && fragment.isInLayout()) {
-            fragment.addNewImage(bitmap);
+            fragment.addNewImage(imageFile);
         }
     }
 
