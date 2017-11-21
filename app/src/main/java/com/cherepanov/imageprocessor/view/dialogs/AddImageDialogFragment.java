@@ -99,7 +99,7 @@ public class AddImageDialogFragment extends DialogFragment {
         });
     }
 
-    private void showURLDialog(){
+    private void showURLDialog() {
         AlertDialog urlDialog = new AlertDialog.Builder(getContext())
                 .setView(R.layout.input_url)
                 .setTitle("Input URL")
