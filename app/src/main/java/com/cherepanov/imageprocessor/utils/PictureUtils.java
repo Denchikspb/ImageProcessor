@@ -12,6 +12,9 @@ public class PictureUtils {
      * @return - our image
      */
     public static Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        if (image == null){
+            return null;
+        }
         int width = image.getWidth();
         int height = image.getHeight();
 

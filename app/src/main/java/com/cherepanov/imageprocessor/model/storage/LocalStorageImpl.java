@@ -1,6 +1,5 @@
 package com.cherepanov.imageprocessor.model.storage;
 
-import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
