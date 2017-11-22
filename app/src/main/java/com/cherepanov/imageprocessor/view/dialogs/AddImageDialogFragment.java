@@ -99,7 +99,6 @@ public class AddImageDialogFragment extends DialogFragment {
             public void onClick(View view) {
                 if (mDialogListener != null) {
                     mInputLayout.setVisibility(View.VISIBLE);
-                    mInputUrlET.setText("youtube-download/img/download-video-from-url.png");
                     mURLBtn.setVisibility(View.GONE);
                 } else {
                     Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();
@@ -110,7 +109,11 @@ public class AddImageDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if (mDialogListener != null) {
-                    mDialogListener.loadFromURL(mInputUrlET.getText().toString());
+                    if (mInputUrlET.getText().toString().isEmpty()){
+                        Toast.makeText(getContext(), R.string.please_enter, Toast.LENGTH_SHORT).show();
+                    } else {
+                        mDialogListener.loadFromURL(mInputUrlET.getText().toString());
+                    }
                 } else {
                     Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();
                 }

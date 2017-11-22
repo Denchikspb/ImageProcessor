@@ -9,7 +9,7 @@ public class RetrofitImageProvider {
     public static ImageService getApiService(){
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl("https://www.5kplayer.com/")
+                .baseUrl("https://your.api.url/v2/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

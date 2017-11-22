@@ -7,6 +7,7 @@
     <string name="add_image">Add image</string>
     <string name="cancel">Cancel</string>
     <string name="failed">Operation Failed</string>
+    <string name="please_enter">Please Enter URL</string>
     <string name="no_internet">No internet</string>
     <string name="download">Download</string>
     <string name="no_image">No image</string>
