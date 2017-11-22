@@ -18,6 +18,10 @@ public class ImageFile {
         return mId;
     }
 
+    public void setId(UUID id) {
+        mId = id;
+    }
+
     public String getPathFile() {
         return "IMG_" + getId().toString() + ".jpg";
     }
