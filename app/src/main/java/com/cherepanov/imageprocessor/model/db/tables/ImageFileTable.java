@@ -28,7 +28,7 @@ public class ImageFileTable {
 
     public static final String DROP_IMAGE_TABLE = "drop table if exists" + TABLE_NAME;
 
-    public static void addImageFile(ImageDBHelper helper, ImageFile imageFile){
+    public static void addImageFile(ImageDBHelper helper, ImageFile imageFile) {
         SQLiteDatabase db = helper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -44,7 +44,7 @@ public class ImageFileTable {
         db.close();
     }
 
-    public static List<ImageFile> getAll(ImageDBHelper helper){
+    public static List<ImageFile> getAll(ImageDBHelper helper) {
         List<ImageFile> imageFiles = new ArrayList<>();
         SQLiteDatabase db = helper.getReadableDatabase();
         try {
@@ -65,11 +65,10 @@ public class ImageFileTable {
         return imageFiles;
     }
 
-    public static void deleteImage(ImageDBHelper helper, ImageFile imageFile){
+    public static void deleteImage(ImageDBHelper helper, ImageFile imageFile) {
         SQLiteDatabase db = helper.getWritableDatabase();
-
-        String selectQuery = "DELETE FROM " + TABLE_NAME + " WHERE " + ID + " = " + imageFile.getId().toString();
-        db.execSQL(selectQuery);
+        int delCount = db.delete(TABLE_NAME, ID + " = ?", new String[]{imageFile.getId().toString()});
+        Log.d(LOG_TAG, " count delete = " + delCount);
     }
 
     private static ImageFile getImage(Cursor cursor) {
