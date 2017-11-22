@@ -11,6 +11,8 @@ import android.support.v4.app.FragmentManager;
 import android.widget.ImageView;
 
 import com.cherepanov.imageprocessor.R;
+import com.cherepanov.imageprocessor.model.db.ImageDBHelper;
+import com.cherepanov.imageprocessor.model.db.tables.ImageFileTable;
 import com.cherepanov.imageprocessor.model.entity.ImageFile;
 import com.cherepanov.imageprocessor.model.storage.ILocalStorage;
 import com.cherepanov.imageprocessor.model.storage.LocalStorageImpl;
@@ -26,11 +28,12 @@ public class ImageProcessPresenter
     private Context mContext;
     private ILocalStorage mStorage;
     private Drawable mSrcDrawable;
+    private ImageDBHelper mDBHelper;
 
     public ImageProcessPresenter(Context context) {
         mContext = context;
-        mStorage = new LocalStorageImpl(context);
-        loadFromStorage();
+        mStorage = LocalStorageImpl.getInstance(mContext);
+        mDBHelper = ImageDBHelper.getInstance(mContext);
     }
 
     @Override
@@ -44,9 +47,7 @@ public class ImageProcessPresenter
         Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         if (isViewAttached()) {
-            ImageFile imageFile = new ImageFile();
-            imageFile.setBitmap(newBitmap);
-            String path = mStorage.saveToInternalStorage(imageFile);
+            ImageFile imageFile = saveImage(newBitmap);
             getView().showNewImage(imageFile);
         }
     }
@@ -77,9 +78,7 @@ public class ImageProcessPresenter
         }
 
         if (isViewAttached()) {
-            ImageFile imageFile = new ImageFile();
-            imageFile.setBitmap(dest);
-            mStorage.saveToInternalStorage(imageFile);
+            ImageFile imageFile = saveImage(dest);
             getView().showNewImage(imageFile);
         }
     }
@@ -95,9 +94,7 @@ public class ImageProcessPresenter
         Bitmap newBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 
         if (isViewAttached()) {
-            ImageFile imageFile = new ImageFile();
-            imageFile.setBitmap(newBitmap);
-            mStorage.saveToInternalStorage(imageFile);
+            ImageFile imageFile = saveImage(newBitmap);
             getView().showNewImage(imageFile);
         }
     }
@@ -167,6 +164,16 @@ public class ImageProcessPresenter
         return true;
     }
 
-    private void loadFromStorage() {
+
+    private ImageFile saveImage(Bitmap newBitmap){
+        ImageFile imageFile = new ImageFile();
+        imageFile.setBitmap(newBitmap);
+        String path = mStorage.saveToInternalStorage(imageFile);
+        imageFile.setPathFile(path);
+        if (imageFile.getPathFile() != null && !imageFile.getPathFile().isEmpty()){
+            ImageFileTable.addImageFile(mDBHelper, imageFile);
+        }
+
+        return imageFile;
     }
 }

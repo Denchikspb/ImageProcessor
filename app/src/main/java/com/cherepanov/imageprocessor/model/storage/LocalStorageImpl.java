@@ -23,8 +23,32 @@ public class LocalStorageImpl implements ILocalStorage {
 
     private Context mContext;
 
+    private static LocalStorageImpl sDBHelper;
+
     public LocalStorageImpl(Context context) {
         mContext = context;
+    }
+
+    public static LocalStorageImpl getInstance(Context context) {
+        if (sDBHelper == null) {
+            sDBHelper = new LocalStorageImpl(context);
+        }
+        return sDBHelper;
+    }
+
+    @Override
+    public Bitmap loadBitmapImageFile(ImageFile imageFile) {
+        File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "ImageProcessor");
+
+        try {
+            File mypath = new File(directory, imageFile.getId() + ".jpg");
+            if (mypath.exists())
+                return BitmapFactory.decodeStream(new FileInputStream(mypath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
@@ -63,19 +87,4 @@ public class LocalStorageImpl implements ILocalStorage {
         }
         return directory.getAbsolutePath();
     }
-
-    private Bitmap loadImageFromStorage(ImageFile imageFile) {
-        File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "ImageProcessor");
-
-        try {
-            File mypath = new File(directory, imageFile.getId() + ".jpg");
-            if (!mypath.exists())
-                return BitmapFactory.decodeStream(new FileInputStream(mypath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
 }

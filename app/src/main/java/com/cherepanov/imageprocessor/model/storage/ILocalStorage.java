@@ -8,6 +8,8 @@ import com.cherepanov.imageprocessor.model.entity.ImageFile;
 
 public interface ILocalStorage {
 
+    Bitmap loadBitmapImageFile(ImageFile imageFile);
+
     Bitmap getBitmapByURI(Uri uri);
 
     String saveToInternalStorage(ImageFile imageFile);
