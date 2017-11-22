@@ -49,8 +49,8 @@ public class ListImagePresenter
 
     @Override
     public void deleteItem(int number) {
-        mCurrentImageFiles.remove(number);
         ImageFileTable.deleteImage(mDBHelper, mCurrentImageFiles.get(number));
+        mCurrentImageFiles.remove(number);
         showData();
     }
 
