@@ -16,4 +16,8 @@ public interface IImageProcessView extends MvpView {
     void getFromGallery();
 
     void showMessage(String text);
+
+    void showLoading();
+
+    void hideLoading(boolean success);
 }

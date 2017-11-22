@@ -170,16 +170,19 @@ public class ImageProcessPresenter
         }
 
         if (isViewAttached()){
+            getView().showLoading();
             getView().showMessage("start load");
             mSubscription = mService.loadImage(url)
                     .subscribe(new Observer<ResponseBody>() {
                         @Override
                         public void onCompleted() {
+                            getView().hideLoading(true);
                             getView().showMessage("load completed");
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            getView().hideLoading(false);
                             getView().showMessage("load failed");
                         }
 

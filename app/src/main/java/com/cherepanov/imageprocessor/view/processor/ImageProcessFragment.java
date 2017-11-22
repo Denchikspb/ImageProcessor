@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.cherepanov.imageprocessor.R;
@@ -38,6 +39,8 @@ public class ImageProcessFragment
 
     @Bind(R.id.image_view)
     ImageView mImage;
+    @Bind(R.id.progress_download)
+    ProgressBar mProgressBar;
 
     private final int CAMERA_RESULT = 0;
     private final int RESULT_LOAD_IMAGE = 1;
@@ -96,6 +99,7 @@ public class ImageProcessFragment
 
     @Override
     public void showMainImage(Bitmap bitmap) {
+        mImage.setVisibility(View.VISIBLE);
         mImage.setImageBitmap(bitmap);
         mAddImageBtn.setVisibility(View.GONE);
     }
@@ -121,6 +125,20 @@ public class ImageProcessFragment
     }
 
     @Override
+    public void showLoading() {
+        mAddImageBtn.setVisibility(View.GONE);
+        mImage.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading(boolean success) {
+        mProgressBar.setVisibility(View.GONE);
+        mImage.setVisibility(success ? View.VISIBLE : View.GONE);
+        mAddImageBtn.setVisibility(success ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_RESULT && resultCode == RESULT_OK && data != null) {
             Bundle bundle = data.getExtras();
@@ -134,6 +152,7 @@ public class ImageProcessFragment
             }
         } else if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Bitmap bitmap = getPresenter().getBitmapByURI(data.getData());
+            mImage.setImageBitmap(null);
             mImage.setImageBitmap(bitmap);
             mAddImageBtn.setVisibility(View.GONE);
         } else if (requestCode == PERMISSION_REQUEST_CODE) {
