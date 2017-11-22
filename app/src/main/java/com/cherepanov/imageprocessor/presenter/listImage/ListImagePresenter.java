@@ -19,16 +19,14 @@ public class ListImagePresenter
         extends MvpBasePresenter<IListImageView>
         implements IListImagePresenter {
 
-    private Context mContext;
     private List<ImageFile> mCurrentImageFiles;
     private ImageDBHelper mDBHelper;
     private ILocalStorage mStorage;
 
     public ListImagePresenter(Context context) {
-        mContext = context;
         mCurrentImageFiles = new ArrayList<>();
-        mDBHelper = ImageDBHelper.getInstance(mContext);
-        mStorage = LocalStorageImpl.getInstance(mContext);
+        mDBHelper = ImageDBHelper.getInstance(context);
+        mStorage = LocalStorageImpl.getInstance(context);
         loadCache();
     }
 

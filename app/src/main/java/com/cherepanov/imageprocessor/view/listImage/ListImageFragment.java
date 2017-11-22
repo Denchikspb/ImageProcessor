@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.cherepanov.imageprocessor.R;
 import com.cherepanov.imageprocessor.model.entity.ImageFile;
@@ -34,6 +35,8 @@ public class ListImageFragment
 
     @Bind(R.id.recycler_view)
     RecyclerView mRecyclerView;
+    @Bind(R.id.no_data_text)
+    TextView mNoDataTV;
 
     private ResultImageAdapter mAdapter;
 
@@ -86,12 +89,18 @@ public class ListImageFragment
 
     @Override
     public void showImageList(List<ImageFile> list) {
+        if (list != null && !list.isEmpty()){
+            mNoDataTV.setVisibility(View.GONE);
+        }
         mAdapter.setCurrentListImage(list);
     }
 
     @Override
     public void deleteImage(int numberItem) {
         getPresenter().deleteItem(numberItem);
+        if (mAdapter.getItemCount() == 0){
+            mNoDataTV.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

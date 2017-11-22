@@ -7,19 +7,33 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.cherepanov.imageprocessor.R;
 import com.cherepanov.imageprocessor.model.db.ImageDBHelper;
 import com.cherepanov.imageprocessor.model.db.tables.ImageFileTable;
 import com.cherepanov.imageprocessor.model.entity.ImageFile;
+import com.cherepanov.imageprocessor.model.service.IService;
+import com.cherepanov.imageprocessor.model.service.Service;
 import com.cherepanov.imageprocessor.model.storage.ILocalStorage;
 import com.cherepanov.imageprocessor.model.storage.LocalStorageImpl;
 import com.cherepanov.imageprocessor.utils.NetworkUtils;
 import com.cherepanov.imageprocessor.view.dialogs.AddImageDialogFragment;
 import com.cherepanov.imageprocessor.view.processor.IImageProcessView;
 import com.hannesdorfmann.mosby3.mvp.MvpBasePresenter;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import okhttp3.ResponseBody;
+import rx.Observer;
+import rx.Subscription;
+import rx.subscriptions.Subscriptions;
 
 public class ImageProcessPresenter
         extends MvpBasePresenter<IImageProcessView>
@@ -29,6 +43,8 @@ public class ImageProcessPresenter
     private ILocalStorage mStorage;
     private Drawable mSrcDrawable;
     private ImageDBHelper mDBHelper;
+    private IService mService = new Service();
+    private Subscription mSubscription = Subscriptions.empty();
 
     public ImageProcessPresenter(Context context) {
         mContext = context;
@@ -121,9 +137,9 @@ public class ImageProcessPresenter
     }
 
     @Override
-    public void loadFromURL() {
+    public void loadFromURL(String url) {
         if (NetworkUtils.isNetAvailable(mContext)) {
-            startLoadFromURL();
+            startLoadFromURL(url);
         } else {
             if (isViewAttached()) {
                 getView().showMessage(mContext.getResources().getString(R.string.no_internet));
@@ -148,9 +164,80 @@ public class ImageProcessPresenter
         }
     }
 
-    private void startLoadFromURL() {
-        if (isViewAttached()) {
+    private void startLoadFromURL(String url) {
+        if (!mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+
+        if (isViewAttached()){
             getView().showMessage("start load");
+            mSubscription = mService.loadImage(url)
+                    .subscribe(new Observer<ResponseBody>() {
+                        @Override
+                        public void onCompleted() {
+                            getView().showMessage("load completed");
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            getView().showMessage("load failed");
+                        }
+
+                        @Override
+                        public void onNext(ResponseBody responseBody) {
+                            Bitmap bitmap = downloadImage(responseBody);
+                            if (isViewAttached()){
+                                getView().showMainImage(bitmap);
+                            }
+                        }
+                    });
+        }
+    }
+
+    public void onStop() {
+        if (!mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+    }
+
+    private Bitmap downloadImage(ResponseBody body) {
+
+        try {
+            Log.d("DownloadImage", "Reading and writing file");
+            InputStream in = null;
+            FileOutputStream out = null;
+
+            ImageFile imageFile = new ImageFile();
+            File directory = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), "ImageProcessor");
+            File mypath = new File(directory, imageFile.getId() + ".jpg");
+
+            try {
+                in = body.byteStream();
+                out = new FileOutputStream(mypath);
+                int c;
+
+                while ((c = in.read()) != -1) {
+                    out.write(c);
+                }
+            }
+            catch (IOException e) {
+                Log.d("DownloadImage",e.toString());
+                return null;
+            }
+            finally {
+                if (in != null) {
+                    in.close();
+                }
+                if (out != null) {
+                    out.close();
+                }
+            }
+
+            return mStorage.loadBitmapImageFile(imageFile);
+
+        } catch (IOException e) {
+            Log.d("DownloadImage",e.toString());
+            return null;
         }
     }
 
@@ -163,7 +250,6 @@ public class ImageProcessPresenter
         }
         return true;
     }
-
 
     private ImageFile saveImage(Bitmap newBitmap){
         ImageFile imageFile = new ImageFile();

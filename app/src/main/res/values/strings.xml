@@ -10,6 +10,7 @@
     <string name="no_internet">No internet</string>
     <string name="download">Download</string>
     <string name="no_image">No image</string>
+    <string name="no_data">No Data</string>
 
     <string name="rotate">Rotate</string>
     <string name="invert">Invert colors</string>
@@ -18,6 +19,7 @@
     <string name="make_photo">Photo</string>
     <string name="take_from_storage">Storage</string>
     <string name="get_from_url">URL</string>
+    <string name="input_url">Enter URL</string>
 
     <string name="delete">Delete</string>
     <string name="source">Source</string>

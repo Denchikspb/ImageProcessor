@@ -86,6 +86,7 @@ public class ImageProcessFragment
     public void onStop() {
         super.onStop();
         getPresenter().saveSrcImage(mImage.getDrawable());
+        getPresenter().onStop();
     }
 
     @Override
@@ -143,6 +144,7 @@ public class ImageProcessFragment
     }
 
     public void addNewSrcImage(Bitmap bitmap) {
+        mAddImageBtn.setVisibility(View.GONE);
         mImage.setImageBitmap(bitmap);
     }
 

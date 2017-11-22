@@ -9,6 +9,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cherepanov.imageprocessor.R;
@@ -23,7 +25,7 @@ public class AddImageDialogFragment extends DialogFragment {
 
         void onTakeFromStorage();
 
-        void loadFromURL();
+        void loadFromURL(String url);
     }
 
     @Bind(R.id.make_photo_btn)
@@ -33,6 +35,12 @@ public class AddImageDialogFragment extends DialogFragment {
     Button mTakeStorageBtn;
     @Bind(R.id.load_from_internet_btn)
     Button mURLBtn;
+    @Bind(R.id.input_edit_text)
+    EditText mInputUrlET;
+    @Bind(R.id.input_layout)
+    LinearLayout mInputLayout;
+    @Bind(R.id.download_btn)
+    Button mDownloadBtn;
 
     AddImageDialogListener mDialogListener;
 
@@ -90,32 +98,24 @@ public class AddImageDialogFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 if (mDialogListener != null) {
-                    showURLDialog();
+                    mInputLayout.setVisibility(View.VISIBLE);
+                    mInputUrlET.setText("youtube-download/img/download-video-from-url.png");
+                    mURLBtn.setVisibility(View.GONE);
+                } else {
+                    Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        mDownloadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mDialogListener != null) {
+                    mDialogListener.loadFromURL(mInputUrlET.getText().toString());
                 } else {
                     Toast.makeText(getContext(), R.string.failed, Toast.LENGTH_SHORT).show();
                 }
                 AddImageDialogFragment.this.getDialog().dismiss();
             }
         });
-    }
-
-    private void showURLDialog() {
-        AlertDialog urlDialog = new AlertDialog.Builder(getContext())
-                .setView(R.layout.input_url)
-                .setTitle("Input URL")
-                .setPositiveButton(R.string.download, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        Toast.makeText(getContext(), "start", Toast.LENGTH_SHORT).show();
-                        mDialogListener.loadFromURL();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        Toast.makeText(getContext(), "cancel", Toast.LENGTH_SHORT).show();
-                    }
-                }).create();
-        urlDialog.show();
     }
 }
